@@ -8,93 +8,48 @@
     <title>Todo APP</title>
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/main.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body>
+<body class="p-5">
     <div class="container mt-5 m-auto row">
 
-        <aside class="col-5">
-            <h3 class="card-title">Nova Tarefa</h3>
+        <aside id="aside-left" class="col-5">
+            <h3 class="card-title text-center">Nova Tarefa</h3>
 
             <form>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Descrição</label>
                     <textarea class="form-control" name="" id="inpt_description" cols="30" rows="5"></textarea>
-                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    <div class="form-text">Descreva a atividade.</div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <label for="exampleInputPassword1" class="form-label">Data</label>
                     <input type="date" class="form-control" id="inpt_date">
                 </div>
 
-                <button type="submit" class="btn btn-primary">Adicinar</button>
+                <p class="text-center">
+                    <button id="btn_add" type="button" class="btn btn-primary">Adicinar</button>
+                </p>
             </form>
         </aside>
 
-        <aside class="col-6">
-            <h3 class="card-title">Calendário</h3>
+        <aside class="col-6 float-end">
+            <h3 class="card-title text-center"> Atividades </h3>
 
-            <ul class="month">
-                <li class="prev">&#10094;</li>
-                <li class="next">&#10095;</li>
-                <li>Agosto<br><span style="font-size:18px">2021</span></li>
+            <ul class="list-group" id="list_task_act">
             </ul>
 
-            <ul class="weekdays">
-                <li>Dom</li>
-                <li>Seg</li>
-                <li>Ter</li>
-                <li>Qua</li>
-                <li>Qui</li>
-                <li>Sex</li>
-                <li>Sáb</li>
-            </ul>
-
-            <ul class="days">
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-                <li>12</li>
-            </ul>
-
-            <ul class="task-list">
-
+            <ul class="list-group" id="list_task_fini">
             </ul>
         </aside>
-
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/async/3.2.0/async.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="./script/main.js"></script>
+
 </body>
 
 </html>
