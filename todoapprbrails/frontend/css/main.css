@@ -1,0 +1,12 @@
+ul {
+    list-style-type: none;
+}
+
+body {
+    font-family: Verdana, sans-serif;
+}
+
+#aside-left {
+    margin-right: 20px;
+    border-right: 3px solid #3c86a8;
+}
