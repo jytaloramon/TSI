@@ -1,4 +1,4 @@
-const server = 'http://127.0.0.1:8000';
+const server = 'http://127.0.0.1:3000';
 const http_req = axios.create({ baseURL: server });
 
 let tasks = [];
@@ -30,21 +30,15 @@ btn_add.click(async() => {
         return;
     }
 
-    const resp = await axios.post(`${server}/create`, task);
+    const resp = await axios.post(`${server}/task`, task);
 
     lists_org();
 });
 
 async function lists_org() {
 
-    const v = await http_req.get("/");
-    const data_h = JSON.parse(v.data);
-
-    tasks = []
-    for (const v of data_h) {
-        tasks.push(v['fields']);
-        tasks[tasks.length - 1]['id'] = v['pk']
-    }
+    const v = await http_req.get("/task/");
+    tasks = v.data
 
     tasks.sort((a, b) => a.date_task > b.date_task);
 
@@ -106,12 +100,12 @@ async function lists_org() {
     btn_delete = $('.btn_delete');
 
     checkbox_task.change(async(e) => {
-        const resp = await axios.patch(`${server}/update`, { id: parseInt(e.currentTarget.id) });
+        const resp = await axios.patch(`${server}/task/update`, { id: parseInt(e.currentTarget.id) });
         lists_org()
     });
 
     btn_delete.click(async(e) => {
-        const resp = await axios.patch(`${server}/delete`, { id: parseInt(e.currentTarget.id) });
+        const resp = await axios.delete(`${server}/task/destroy`, { data: { id: parseInt(e.currentTarget.id) } });
         lists_org()
     });
 
