@@ -22,15 +22,15 @@ btn_add.click(async() => {
 
     const task = {
         description: jq_form.description.val(),
-        date: jq_form.date.val()
+        date_task: jq_form.date.val()
     }
 
-    if (task.description.length == 0 || task.date.length == 0) {
+    if (task.description.length == 0 || task.date_task.length == 0) {
         alert('Preencha os campos!');
         return;
     }
 
-    const resp = await axios.post(`${server}/task`, task);
+    const resp = await axios.post(`${server}/task/`, task);
 
     lists_org();
 });
