@@ -46,7 +46,7 @@ Vale lembrar que, em caso de atraso na entrega, terá um ponto de decréscimo na
 *Inserção da quarta atividade*
 
 ![](./img/Image6.png)
-*Remoção de duas atividade FC, última que foi inserida.*
+*Remoção da tarefa "FC", última que foi inserida.*
 
 ![](./img/Image7.png)
 *Marcação de todas as atividade como finalizadas.*
