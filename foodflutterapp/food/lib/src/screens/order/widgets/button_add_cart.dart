@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:food/src/core/app_colors.dart';
 
-class ButtonAddCart extends StatelessWidget {
+class ButtonAddCart extends StatefulWidget {
   final VoidCallback onTap;
 
   const ButtonAddCart({Key? key, required this.onTap}) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() => ButtonAddCartState(onTap: this.onTap);
+}
+
+class ButtonAddCartState extends State<ButtonAddCart> {
+  final VoidCallback onTap;
+
+  ButtonAddCartState({required this.onTap});
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: this.onTap
+      ,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(

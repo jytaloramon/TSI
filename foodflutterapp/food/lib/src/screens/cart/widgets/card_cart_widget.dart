@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:food/src/core/app_colors.dart';
 import 'package:food/src/core/app_text_styles.dart';
+import 'package:food/src/models/cart/cart.dart';
 
 class CardCartWidget extends StatelessWidget {
   final String title;
   final double price;
   final String image;
   final String amount;
+  final int idx;
   final Function onMinusTapped;
   final Function onAddTapped;
   final Function onRemoveProduct;
@@ -17,6 +19,7 @@ class CardCartWidget extends StatelessWidget {
     required this.price,
     required this.image,
     required this.amount,
+    required this.idx,
     required this.onMinusTapped,
     required this.onAddTapped,
     required this.onRemoveProduct,
@@ -60,7 +63,9 @@ class CardCartWidget extends StatelessWidget {
                       style: AppTextStyles.subtitle17,
                     ),
                     InkWell(
-                      onTap: () => this.onRemoveProduct(),
+                      onTap: (){
+                        this.onRemoveProduct();
+                      },
                       child: Icon(
                         Icons.close,
                         color: AppColors.colorRed,

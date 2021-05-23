@@ -1,22 +1,73 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-
 import 'package:food/src/core/app_colors.dart';
-import 'package:food/src/core/app_image.dart';
 import 'package:food/src/core/app_text_styles.dart';
-import 'package:food/src/models/product.dart';
+import 'package:food/src/models/cart/cart.dart';
+import 'package:food/src/models/favorite/favorite.dart';
+import 'package:food/src/models/product/product.dart';
+import 'package:food/src/models/product/product_purchase.dart';
+import 'package:food/src/models/product/products_list.dart';
 import 'package:food/src/screens/order/widgets/around_amount_widget.dart';
 import 'package:food/src/screens/order/widgets/button_add_cart.dart';
 import 'package:food/src/screens/order/widgets/button_shadow_widget.dart';
 import 'package:food/src/screens/order/widgets/size_product_widget.dart';
 import 'package:food/src/util/app_icons_icons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class OrderScreen extends StatelessWidget {
-  Product product;
+class OrderScreen extends StatefulWidget {
+  final int id;
 
   OrderScreen({
     Key? key,
-    required this.product,
+    required this.id,
   }) : super(key: key);
+
+  ProductPurchase mountOrder(Product product) {
+    return new ProductPurchase(
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        amount: 1,
+        dimension: 'P',
+        imageUrl: product.imageUrl);
+  }
+
+  @override
+  State<StatefulWidget> createState() => OrderScreenState(
+      id: this.id, productPurchase: mountOrder(ProductsList.data[id]));
+}
+
+class OrderScreenState extends State<OrderScreen> {
+  final int id;
+  final ProductPurchase productPurchase;
+
+  OrderScreenState({required this.id, required this.productPurchase});
+
+  void alterMount(int value) {
+    if (productPurchase.amount + value < 1) return;
+
+    setState(() {
+      productPurchase.amount += value;
+    });
+  }
+
+  void alterLike() {
+    setState(() {
+      Favorite.isExistId(this.id)
+          ? Favorite.dataId.remove(this.id)
+          : Favorite.dataId.add(this.id);
+    });
+  }
+
+  void alterDimension(String dimension) {
+    setState(() {
+      productPurchase.dimension = dimension;
+    });
+  }
+
+  bool isDimensionSelected(String dimension) {
+    return productPurchase.dimension == dimension;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +90,14 @@ class OrderScreen extends StatelessWidget {
                           },
                         ),
                         ButtonShadowWidget(
-                          icon:
-                              Icon(AppIcons.like_outline, color: AppColors.colorRed),
+                          icon: Icon(
+                              Favorite.isExistId(this.id)
+                                  ? AppIcons.like
+                                  : AppIcons.like_outline,
+                              color: AppColors.colorRed),
+                          onTap: () {
+                            alterLike();
+                          },
                         )
                       ],
                     ),
@@ -48,7 +105,7 @@ class OrderScreen extends StatelessWidget {
                       padding:
                           const EdgeInsets.only(top: 10, left: 70, right: 70),
                       child: Text(
-                        product.name,
+                        productPurchase.name,
                         style: AppTextStyles.titleSemiBold,
                       ),
                     ),
@@ -56,12 +113,12 @@ class OrderScreen extends StatelessWidget {
                       padding:
                           const EdgeInsets.only(top: 10, left: 70, right: 70),
                       child: Text(
-                        product.description,
+                        productPurchase.description,
                         style: AppTextStyles.body,
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    Image.asset(product.imageUrl),
+                    Image.asset(productPurchase.imageUrl),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Row(
@@ -69,23 +126,23 @@ class OrderScreen extends StatelessWidget {
                         children: [
                           SizeProductWidget(
                             title: "P",
-                            selected: true,
+                            selected: isDimensionSelected("P"),
                             onTap: () {
-                              print("P");
+                              alterDimension("P");
                             },
                           ),
                           SizeProductWidget(
                             title: "M",
-                            selected: false,
+                            selected: isDimensionSelected("M"),
                             onTap: () {
-                              print("M");
+                              alterDimension("M");
                             },
                           ),
                           SizeProductWidget(
                             title: "G",
-                            selected: false,
+                            selected: isDimensionSelected("G"),
                             onTap: () {
-                              print("G");
+                              alterDimension("G");
                             },
                           ),
                         ],
@@ -99,19 +156,19 @@ class OrderScreen extends StatelessWidget {
                           AroundAmountWidget(
                             icon: Icons.remove,
                             onTap: () {
-                              print("remove");
+                              alterMount(-1);
                             },
                           ),
                           SizedBox(width: 50),
                           Text(
-                            "5",
+                            productPurchase.amount.toString(),
                             style: AppTextStyles.letterAmount,
                           ),
                           SizedBox(width: 50),
                           AroundAmountWidget(
                             icon: Icons.add,
                             onTap: () {
-                              print("add");
+                              alterMount(1);
                             },
                           ),
                         ],
@@ -144,7 +201,7 @@ class OrderScreen extends StatelessWidget {
                                 style: AppTextStyles.heading,
                               ),
                               Text(
-                                "R\$ ${product.price}",
+                                "R\$ ${productPurchase.price}",
                                 style: AppTextStyles.letterAmount,
                               ),
                             ],
@@ -153,7 +210,21 @@ class OrderScreen extends StatelessWidget {
                       ),
                       Expanded(
                         child: ButtonAddCart(
-                          onTap: () {},
+                          onTap: () {
+                            Cart.data.add(productPurchase);
+
+                            Fluttertoast.showToast(
+                              msg: "Adicionado!",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+
+                            sleep(const Duration(seconds: 1));
+                            Navigator.pop(context);
+                          },
                         ),
                       )
                     ],

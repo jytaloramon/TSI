@@ -1,40 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:food/src/core/app_image.dart';
-import 'package:food/src/core/app_text_styles.dart';
-import 'package:food/src/models/product.dart';
+import 'package:food/src/models/product/product.dart';
+import 'package:food/src/models/product/products_list.dart';
 import 'package:food/src/screens/favorite//widgets/card_cart_widget.dart';
-import 'package:food/src/screens/favorite/widgets/item_widget.dart';
+import 'package:food/src/models/favorite/favorite.dart';
 
-class FavScreen extends StatelessWidget {
-  static final productCart = [
-    new Product(
-        name: "Burger",
-        description: "Burger X",
-        price: 23.00,
-        amount: 1,
-        imageUrl: AppImage.beefBurger),
-    new Product(
-        name: "Bolo",
-        description: "Chocolate Cake",
-        price: 7.00,
-        amount: 2,
-        imageUrl: AppImage.cake),
-    new Product(
-        name: "Chicken Wing",
-        description: "Pepper Chicken Wing",
-        price: 20.00,
-        amount: 1,
-        imageUrl: AppImage.chickenWing),
-    new Product(
-        name: "Pizza",
-        description: "Pizza Pepperoni",
-        price: 45.00,
-        amount: 2,
-        imageUrl: AppImage.pizza)
-  ];
+class FavScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => FavScreenState();
+}
+
+class FavScreenState extends State<FavScreen> {
+  List<Product> getProductCart() {
+    List<Product> products = [];
+
+    for (var id in Favorite.dataId) {
+      products.add(ProductsList.data[id]);
+    }
+
+    return products;
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<Product> productCart = getProductCart();
 
     return Column(
       children: [
@@ -51,10 +39,15 @@ class FavScreen extends StatelessWidget {
                       title: product.name.toString(),
                       image: product.imageUrl.toString(),
                       price: product.price,
+                      id: index,
                       description: product.description.toString(),
                       onAddTapped: () {},
                       onMinusTapped: () {},
-                      onRemoveProduct: () {},
+                      onRemoveProduct: () {
+                        setState(() {
+                          Favorite.dataId.removeAt(index);
+                        });
+                      },
                     );
                   },
                 ),

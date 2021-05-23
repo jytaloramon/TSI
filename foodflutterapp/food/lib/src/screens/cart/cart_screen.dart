@@ -1,63 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:food/src/core/app_image.dart';
 import 'package:food/src/core/app_text_styles.dart';
-import 'package:food/src/models/product.dart';
+import 'package:food/src/models/cart/cart.dart';
+import 'package:food/src/models/product/product_purchase.dart';
 import 'package:food/src/screens/cart/widgets/button_confirm_widget.dart';
 import 'package:food/src/screens/cart/widgets/card_cart_widget.dart';
 import 'package:food/src/screens/cart/widgets/item_widget.dart';
 
-class CartScreen extends StatelessWidget {
-  static final productCart = [
-    new Product(
-        name: "Burger",
-        description: "",
-        price: 23.00,
-        amount: 1,
-        imageUrl: AppImage.beefBurger),
-    new Product(
-        name: "Bolo",
-        description: "",
-        price: 7.00,
-        amount: 2,
-        imageUrl: AppImage.cake),
-    new Product(
-        name: "Chicken Wing",
-        description: "",
-        price: 20.00,
-        amount: 1,
-        imageUrl: AppImage.chickenWing),
-    new Product(
-        name: "Hot Dog",
-        description: "",
-        price: 10.00,
-        amount: 2,
-        imageUrl: AppImage.hotDog),
-    new Product(
-        name: "Snack",
-        description: "",
-        price: 17.50,
-        amount: 1,
-        imageUrl: AppImage.snack),
-    new Product(
-        name: "Pizza",
-        description: "",
-        price: 45.00,
-        amount: 2,
-        imageUrl: AppImage.pizza)
-  ];
+class CartScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => CartScreenState();
+}
 
-  static double sumTotal() {
+class CartScreenState extends State<CartScreen> {
+  final productCart = Cart.data;
+
+  static double sumTotal(List<ProductPurchase> productCart) {
     var sum = 0.0;
-    for (var prod in productCart) {
-      sum += prod.amount * prod.price;
-    }
+    for (var prod in productCart) sum += prod.amount * prod.price;
 
     return sum;
   }
 
+  void alterMount(ProductPurchase productPurchase, int value) {
+    if (productPurchase.amount + value < 1) return;
+
+    setState(() {
+      productPurchase.amount += value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var sumTV = sumTotal();
+    var sumTV = sumTotal(productCart);
     var taxa = 1.25;
 
     return Column(
@@ -76,9 +50,18 @@ class CartScreen extends StatelessWidget {
                       image: product.imageUrl.toString(),
                       price: product.price,
                       amount: product.amount.toInt().toString(),
-                      onAddTapped: () {},
-                      onMinusTapped: () {},
-                      onRemoveProduct: () {},
+                      idx: index,
+                      onAddTapped: () {
+                        alterMount(product, 1);
+                      },
+                      onMinusTapped: () {
+                        alterMount(product, -1);
+                      },
+                      onRemoveProduct: () {
+                        setState(() {
+                          productCart.remove(product);
+                        });
+                      },
                     );
                   },
                 ),

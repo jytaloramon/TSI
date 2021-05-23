@@ -9,6 +9,7 @@ class SearchWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16),
         child: TextField(
+          onSubmitted: (e) => {},
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),

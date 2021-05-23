@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food/src/core/app_image.dart';
 import 'package:food/src/core/app_text_styles.dart';
-import 'package:food/src/models/product.dart';
+import 'package:food/src/models/product/product.dart';
+import 'package:food/src/models/product/products_list.dart';
 import 'package:food/src/screens/home/home_controller.dart';
 import 'package:food/src/screens/home/widgets/card_category_widget.dart';
 import 'package:food/src/screens/home/widgets/card_product_widget.dart';
@@ -23,90 +24,16 @@ class HomeScreen extends StatelessWidget {
       "image": AppImage.pizza,
     },
     {
-      "title": "Burgers",
-      "image": AppImage.beefBurger,
-    },
-    {
-      "title": "Bolos",
-      "image": AppImage.cake,
-    },
-    {
-      "title": "Pizza",
-      "image": AppImage.pizza,
+      "title": "Snack",
+      "image": AppImage.snack,
     },
   ];
 
   final productlist = {
-    "burgers": [
-      Product(
-        name: "Burguer X salada",
-        description:
-            "A signature flame-grilled chicken patty topped with smoked beef",
-        price: 16.8,
-        amount: 0,
-        imageUrl: AppImage.beefBurger,
-      ),
-      Product(
-        name: "Burguer X Catupiry",
-        description:
-            "A signature flame-grilled chicken patty topped with smoked beef",
-        price: 10.5,
-        amount: 0,
-        imageUrl: AppImage.beefBurger,
-      ),
-      Product(
-        name: "Burguer Big",
-        description:
-            "A signature flame-grilled chicken patty topped with smoked beef",
-        price: 20.8,
-        amount: 0,
-        imageUrl: AppImage.beefBurger,
-      ),
-    ],
-    "pizza": [
-      Product(
-        name: "Pizza G Portuguesa",
-        description:
-            "A signature flame-grilled chicken patty topped with smoked beef",
-        price: 60.8,
-        amount: 0,
-        imageUrl: AppImage.pizza,
-      ),
-      Product(
-        name: "Pizza G de chocolate",
-        description:
-            "A signature flame-grilled chicken patty topped with smoked beef",
-        price: 75.8,
-        amount: 0,
-        imageUrl: AppImage.pizza,
-      ),
-    ],
-    "bolos": [
-      Product(
-        name: "Bolo de morango",
-        description:
-            "A signature flame-grilled chicken patty topped with smoked beef",
-        price: 150.8,
-        amount: 0,
-        imageUrl: AppImage.cake,
-      ),
-      Product(
-        name: "Bolo de morango",
-        description:
-            "A signature flame-grilled chicken patty topped with smoked beef",
-        price: 150.8,
-        amount: 0,
-        imageUrl: AppImage.cake,
-      ),
-      Product(
-        name: "Bolo de morango",
-        description:
-            "A signature flame-grilled chicken patty topped with smoked beef",
-        price: 150.8,
-        amount: 0,
-        imageUrl: AppImage.cake,
-      ),
-    ],
+    "burgers": [0, 6, 7, 8],
+    "pizza": [5, 9, 10],
+    "bolos": [1, 11, 12],
+    "snack": [2, 3, 4]
   };
 
   HomeController homeController = HomeController();
@@ -192,7 +119,8 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 itemCount: productlist[categoryKey]!.length,
                 itemBuilder: (context, index) {
-                  Product product = productlist[categoryKey]![index];
+                  Product product =
+                      ProductsList.data[productlist[categoryKey]![index]];
 
                   return CardProductWidget(
                     title: product.name,
@@ -204,7 +132,7 @@ class HomeScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => OrderScreen(
-                            product: product,
+                            id: productlist[categoryKey]![index],
                           ),
                         ),
                       );

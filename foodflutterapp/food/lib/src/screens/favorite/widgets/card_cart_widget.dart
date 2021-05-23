@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:food/src/core/app_colors.dart';
-import 'package:food/src/core/app_image.dart';
 import 'package:food/src/core/app_text_styles.dart';
+import 'package:food/src/screens/order/widgets/button_shadow_widget.dart';
+import 'package:food/src/util/app_icons_icons.dart';
 
 class CardCartWidget extends StatelessWidget {
   final String title;
   final double price;
   final String image;
   final String description;
+  final int id;
   final Function onMinusTapped;
   final Function onAddTapped;
   final Function onRemoveProduct;
@@ -18,6 +20,7 @@ class CardCartWidget extends StatelessWidget {
     required this.price,
     required this.image,
     required this.description,
+    required this.id,
     required this.onMinusTapped,
     required this.onAddTapped,
     required this.onRemoveProduct,
@@ -62,34 +65,10 @@ class CardCartWidget extends StatelessWidget {
                           this.title,
                           style: AppTextStyles.subtitle17,
                         ),
-                        InkWell(
-                            onTap: () => this.onRemoveProduct(),
-                            child: Container(
-                              width: 40,
-                              height: 40,
-                              child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 8, left: 8, right: 8, bottom: 8),
-                                  child: Image.asset(AppImage.heart.toString(),
-                                      width: 24, height: 24)),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(5),
-                                    topRight: Radius.circular(5),
-                                    bottomLeft: Radius.circular(5),
-                                    bottomRight: Radius.circular(5)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                            ))
+                        ButtonShadowWidget(
+                          icon: Icon(AppIcons.like, color: AppColors.colorRed),
+                          onTap: this.onRemoveProduct,
+                        )
                       ],
                     )),
                 Padding(
