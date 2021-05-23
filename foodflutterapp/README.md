@@ -23,7 +23,7 @@
 
 ### Outras telas (testes)
 - Add. produtos.
-- Implementação de função para calculo de preço toral.
+- Implementação de função para calculo de preço total.
 
 ![](./img/Image2.png)
 *Tela original.*
